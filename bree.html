@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Barra de Progreso</title>
+    <style>
+        #progressContainer {
+            width: 100%;
+            max-width: 600px; /* Ajusta el máximo ancho según necesites */
+            margin: 0 auto; /* Centrar el contenedor en la página */
+            background-color: #e0e0e0;
+            border-radius: 25px;
+            overflow: hidden;
+            position: relative;
+        }
+        #progressBar {
+            width: 0;
+            height: 30px;
+            background-color: #76c7c0;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+            border-radius: 25px 0 0 25px;
+            position: relative;
+        }
+        #progressText {
+            position: absolute;
+            width: 100%;
+            text-align: center;
+            line-height: 30px;
+            top: 0;
+            left: 0;
+            color: black; /* Para mejor visibilidad */
+        }
+    </style>
+</head>
+<body>
+    <div id="progressContainer">
+        <div id="progressBar"></div>
+        <div id="progressText">0%</div>
+    </div>
+
+    <script>
+        function fillProgressBar() {
+            let progressBar = document.getElementById('progressBar');
+            let progressText = document.getElementById('progressText');
+            let width = 0;
+            let interval = setInterval(frame, 1000); // Actualiza cada 1000ms (1 segundo)
+
+            function frame() {
+                if (width >= 45) {
+                    clearInterval(interval);
+                } else {
+                    width++;
+                    let percent = (width / 45) * 100;
+                    progressBar.style.width = percent + '%';
+                    progressText.innerHTML = width + 's'; // Mostrar los segundos
+                }
+            }
+        }
+
+        // Iniciar la barra de progreso
+        fillProgressBar();
+    </script>
+</body>
+</html>

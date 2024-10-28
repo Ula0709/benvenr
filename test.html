@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Telegram Bot Messages</title>
+<style>
+  body {
+    font-family: Arial, sans-serif;
+    padding: 20px;
+  }
+  .message-container {
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid #ccc;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .message-text {
+    flex-grow: 1;
+    margin-right: 10px;
+  }
+  .copy-button {
+    padding: 5px 10px;
+    cursor: pointer;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+  }
+</style>
+</head>
+<body>
+<h1>Messages from Telegram Bot</h1>
+<div id="message-container"></div>
+
+<script>
+     console.log("working")
+  const apiKey = '7305010919:AAFAIn4l82U8s4hx6_BbV6bOPz1GFzTV9eM';
+  const groupId = '-1002246039675';
+  const botId = '7305010919';
+
+  // Obtener actualizaciones de mensajes del bot
+  async function fetchMessages() {
+    const url = `https://api.telegram.org/bot${apiKey}/getUpdates`;
+    const response = await fetch(url);
+    const data = await response.json();
+    return data.result;
+    console.log(data.result)
+   
+
+  }
+
+  // Mostrar los mensajes en la página web
+  function displayMessages(messages) {
+    const container = document.getElementById('message-container');
+    container.innerHTML = '';
+
+    messages.forEach(update => {
+      if (update.message && update.message.chat && update.message.chat.id == groupId) {
+        const message = update.message;
+        const messageText = message.text;
+
+        const messageDiv = document.createElement('div');
+        messageDiv.className = 'message-container';
+
+        const textDiv = document.createElement('div');
+        textDiv.className = 'message-text';
+        textDiv.textContent = messageText;
+
+        const button = document.createElement('button');
+        button.className = 'copy-button';
+        button.textContent = 'Copiar';
+        button.onclick = () => copyToClipboard(messageText);
+
+        messageDiv.appendChild(textDiv);
+        messageDiv.appendChild(button);
+        container.appendChild(messageDiv);
+      }
+    });
+  }
+
+  // Copiar texto al portapapeles
+  function copyToClipboard(text) {
+    const tempInput = document.createElement('input');
+    tempInput.value = text;
+    document.body.appendChild(tempInput);
+    tempInput.select();
+    document.execCommand('copy');
+    document.body.removeChild(tempInput);
+    alert('Texto copiado: ' + text);
+  }
+
+  // Cargar y mostrar mensajes
+  async function loadMessages() {
+    const messages = await fetchMessages();
+    
+    displayMessages(messages);
+  }
+
+  loadMessages();
+  setInterval(loadMessages, 5000); // Refresh every 5 seconds
+</script>
+</body>
+</html>

